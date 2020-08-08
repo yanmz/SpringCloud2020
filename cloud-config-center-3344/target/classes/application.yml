@@ -1,0 +1,29 @@
+server:
+  port: 3344
+
+spring:
+  application:
+    name: cloud-config-center
+  cloud:
+    config:
+      server:
+        git:
+          uri: https://github.com/yanmz/microservicecloud-config.git
+          search-paths: #搜索目录
+            - microservicecloud-config
+      #读取分支
+      label: master
+
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://eureka7001.com:7001/eureka,http://eureka7002.com:7002/eureka
+
+# 暴露bus刷新配置的端点  curl  -X POST "http://localhost:3344/actuator/bus-refresh" 广播通知执行
+#定点通知： curl  -X POST "http://localhost:3344/actuator/bus-refresh/config-client:3355"
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "bus-refresh"
